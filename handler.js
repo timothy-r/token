@@ -42,7 +42,7 @@ module.exports.get = (event, context, callback) => {
 
   const params = {
     Key: {
-      id: event.id
+      id: event.path.id
     },
 
     TableName: process.env.TABLE_NAME

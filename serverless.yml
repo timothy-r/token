@@ -41,30 +41,31 @@ region: eu-west-1
 #    - exclude-me-dir/**
 
 functions:
-  functions/add:
+  add:
     handler: handler.add
-
-#    The following are a few example events you can configure
     events:
       - http:
           path: /
           method: post
-#      - s3: ${env:BUCKET}
-#      - schedule: rate(10 minutes)
-#      - sns: greeter-topic
-#      - stream: arn:aws:dynamodb:region:XXXXXX:table/foo/stream/1970-01-01T00:00:00.000
-#      - alexaSkill
-#      - iot:
-#          sql: "SELECT * FROM 'some_topic'"
-#      - cloudwatchEvent:
-#          event:
-#            source:
-#              - "aws.ec2"
-#            detail-type:
-#              - "EC2 Instance State-change Notification"
-#            detail:
-#              state:
-#                - pending
+  get:
+    handler: handler.get
+    events:
+      - http:
+        path: /
+        method: get
+
+  update:
+    handler: handler.update
+    events:
+      - http:
+        path: /
+        method: patch
+  delete:
+    handler: handler.delete
+    events:
+      - http:
+        path: /
+        method: delete
 
 #    Define function environment variables here
 #    environment:

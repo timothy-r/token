@@ -31,7 +31,7 @@ module.exports.add = (event, context, callback) => {
 
   client.put(params, function(err, result) {
     if (err) {
-          return callback(err);
+          return callback('[500]', err);
       } else {
           return callback(null, {
             statusCode: 200,
@@ -61,9 +61,7 @@ module.exports.get = (event, context, callback) => {
 
   client.get(params, function(err, result){
     if (err) {
-      return callback(err, {
-        statusCode: 500
-      });
+      return callback('[500]', err);
     } else if (result.Item) {
       return callback(null, result.Item.data);
     } else {
@@ -105,7 +103,7 @@ module.exports.delete = (event, context, callback) => {
 
   client.delete(params, function(err, result){
     if (err) {
-      return callback(err);
+      return callback('[500]', err);
     } else {
       return callback(null, event.path.id);
     }

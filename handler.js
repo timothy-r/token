@@ -7,13 +7,11 @@ var client = new AWS.DynamoDB.DocumentClient({apiVersion: '2012-08-10'});
 var uuid = require('uuid');
 
 /**
- * create a new token, generate the id here
+ * create a new token, generate the id, respond with Location header
  */
 module.exports.add = (event, context, callback) => {
 
   const id = uuid.v4();
-
-  console.log(event);
 
   let host = event.headers.Host;
   let stage = event.requestContext.stage;
@@ -63,11 +61,13 @@ module.exports.get = (event, context, callback) => {
 
   client.get(params, function(err, result){
     if (err) {
-      return callback(err);
+      return callback(err, {
+        statusCode: 500
+      });
     } else if (result.Item) {
       return callback(null, result.Item.data);
     } else {
-      return callback('not-found');
+      return callback('[404]', {});
     }
   });
 
@@ -85,7 +85,6 @@ module.exports.update = (event, context, callback) => {
 
     TableName: process.env.TABLE_NAME
   };
-
 
   callback(null, {});
 

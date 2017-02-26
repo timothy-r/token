@@ -31,6 +31,9 @@ module.exports.add = (event, context, callback) => {
       } else {
           return callback(null, {
             statusCode: 200,
+            headers: {
+              "Location" : "/" + id
+            },
             body: JSON.stringify({
               id: id
             })

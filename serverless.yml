@@ -7,6 +7,20 @@ service: token
 provider:
   name: aws
   runtime: nodejs4.3
+  memorySize: 128
+  iamRoleStatements:
+    - Effect: Allow
+      Action: # Gives permission to DynamoDB tables in a specific region
+        - dynamodb:DescribeTable
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: "arn:aws:dynamodb:eu-west-1:*:*"
+      environment:
+            TABLE_NAME: tokens
 
 # you can overwrite defaults here
 stage: dev
@@ -47,26 +61,43 @@ functions:
       - http:
           path: /
           method: post
+
   get:
     handler: handler.get
     events:
       - http:
-        path: /
+        path: /{id}
         method: get
+        integration: lambda
+        request:
+          parameters:
+            paths:
+              id: true
 
   update:
     handler: handler.update
     events:
       - http:
-        path: /
+        path: /{id}
         method: patch
+        integration: lambda
+        request:
+          parameters:
+            paths:
+              id: true
+
   delete:
     handler: handler.delete
     events:
       - http:
-        path: /
+        path: /{id}
         method: delete
-
+        integration: lambda
+        request:
+          parameters:
+            paths:
+              id: true
+              
 #    Define function environment variables here
 #    environment:
 #      variable2: value2

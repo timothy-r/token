@@ -1,16 +1,114 @@
 'use strict';
 
-module.exports.hello = (event, context, callback) => {
-  const response = {
-    statusCode: 200,
-    body: JSON.stringify({
-      message: 'Go Serverless v1.0! Your function executed successfully!',
-      input: event,
-    }),
+var AWS = require('aws-sdk');
+AWS.config.update({region: process.env.SERVERLESS_REGION});
+var client = new AWS.DynamoDB.DocumentClient({apiVersion: '2012-08-10'});
+
+var uuid = require('uuid');
+
+/**
+ * create a new token, generate the id, respond with Location header
+ */
+module.exports.add = (event, context, callback) => {
+
+  const id = uuid.v4();
+
+  let host = event.headers.Host;
+  let stage = event.requestContext.stage;
+
+  // create the url this token will be available at
+  // ought to provide this as an env var?
+
+  const url = 'https://' + host + '/' + stage + '/' + id;
+
+  const params = {
+    Item : {
+      id: id,
+      data: JSON.parse(event.body)
+    },
+    TableName: process.env.TABLE_NAME
   };
 
-  callback(null, response);
+  client.put(params, function(err, result) {
+    if (err) {
+          return callback(err);
+      } else {
+          return callback(null, {
+            statusCode: 200,
+            headers: {
+              "Location" : url
+            },
+            body: JSON.stringify({
+              id: id
+            })
+          });
+      }
+  });
+};
 
-  // Use this code if you don't use the http event with the LAMBDA-PROXY integration
-  // callback(null, { message: 'Go Serverless v1.0! Your function executed successfully!', event });
+/**
+ * get a token by its id
+ */
+module.exports.get = (event, context, callback) => {
+
+  const params = {
+    Key: {
+      id: event.path.id
+    },
+
+    TableName: process.env.TABLE_NAME
+  };
+
+  client.get(params, function(err, result){
+    if (err) {
+      return callback(err, {
+        statusCode: 500
+      });
+    } else if (result.Item) {
+      return callback(null, result.Item.data);
+    } else {
+      return callback('[404]', {});
+    }
+  });
+
+};
+
+/**
+ * Update an exisiting token
+ */
+module.exports.update = (event, context, callback) => {
+
+  const params = {
+    Key: {
+      id: event.path.id
+    },
+
+    TableName: process.env.TABLE_NAME
+  };
+
+  callback(null, {});
+
+};
+
+/**
+ * delete a token
+ */
+module.exports.delete = (event, context, callback) => {
+
+  const params = {
+    Key: {
+      id: event.path.id
+    },
+
+    TableName: process.env.TABLE_NAME
+  };
+
+  client.delete(params, function(err, result){
+    if (err) {
+      return callback(err);
+    } else {
+      return callback(null, event.path.id);
+    }
+  });
+
 };

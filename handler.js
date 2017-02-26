@@ -13,9 +13,15 @@ module.exports.add = (event, context, callback) => {
 
   const id = uuid.v4();
 
+  console.log(event);
+
+  let host = event.headers.Host;
+  let stage = event.requestContext.stage;
+
   // create the url this token will be available at
-  // ought to provide this as an env var
-  // const url = 'https://' + apiId + '.execute-api.' + region + '.amazonaws.com/' + stage + / + id;
+  // ought to provide this as an env var?
+
+  const url = 'https://' + host + '/' + stage + '/' + id;
 
   const params = {
     Item : {
@@ -32,7 +38,7 @@ module.exports.add = (event, context, callback) => {
           return callback(null, {
             statusCode: 200,
             headers: {
-              "Location" : "/" + id
+              "Location" : url
             },
             body: JSON.stringify({
               id: id

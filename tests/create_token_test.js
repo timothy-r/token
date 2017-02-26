@@ -17,7 +17,7 @@ describe('Token service', function() {
                 .set('Content-Type', 'application/json')
                 .send(
                     {
-                        "creator": 'tim.rodger@sputnik.net',
+                        "creator": "tim.rodger@sputnik.net",
                         "status": "active",
                         "count" : 0
                     })

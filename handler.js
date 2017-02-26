@@ -17,7 +17,7 @@ module.exports.add = (event, context, callback) => {
   const params = {
     Item : {
       id: id,
-      data: event.body
+      data: JSON.parse(event.body)
     },
     TableName: process.env.TABLE_NAME
   };
@@ -37,6 +37,8 @@ module.exports.add = (event, context, callback) => {
 };
 
 module.exports.get = (event, context, callback) => {
+
+  console.log(JSON.stringify(event));
 
   const params = {
     Key: {

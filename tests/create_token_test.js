@@ -68,7 +68,15 @@ describe('Token service', function() {
 
                    request('')
                        .delete(token_endpoint)
-                       .expect(200, done);
+                       .expect(200)
+                       .end(function(err, result){
+                          if (err){
+                              return done(err);
+                          }
+                          request('')
+                              .get(token_endpoint)
+                              .expect(404, done)
+                       });
                });
        });
     });

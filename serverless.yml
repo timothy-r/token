@@ -19,8 +19,8 @@ provider:
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
       Resource: "arn:aws:dynamodb:eu-west-1:*:*"
-      environment:
-            TABLE_NAME: tjr_tokens
+  environment:
+    TABLE_NAME: tjr_tokens
 
 # you can overwrite defaults here
   stage: dev

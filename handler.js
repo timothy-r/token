@@ -70,7 +70,6 @@ module.exports.update = (event, context, callback) => {
 
 };
 
-
 module.exports.delete = (event, context, callback) => {
   const response = {
     statusCode: 200,

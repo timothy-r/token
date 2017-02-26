@@ -23,8 +23,8 @@ provider:
             TABLE_NAME: tokens
 
 # you can overwrite defaults here
-stage: dev
-region: eu-west-1
+  stage: dev
+  region: eu-west-1
 
 # you can add statements to the Lambda function's IAM Role here
 #  iamRoleStatements:
@@ -66,38 +66,38 @@ functions:
     handler: handler.get
     events:
       - http:
-        path: /{id}
-        method: get
-        integration: lambda
-        request:
-          parameters:
-            paths:
-              id: true
+          path: /{id}
+          method: get
+          integration: lambda
+          request:
+            parameters:
+              paths:
+                id: true
 
   update:
     handler: handler.update
     events:
       - http:
-        path: /{id}
-        method: patch
-        integration: lambda
-        request:
-          parameters:
-            paths:
-              id: true
+          path: /{id}
+          method: get
+          integration: lambda
+          request:
+            parameters:
+              paths:
+                id: true
 
   delete:
     handler: handler.delete
     events:
       - http:
-        path: /{id}
-        method: delete
-        integration: lambda
-        request:
-          parameters:
-            paths:
-              id: true
-              
+          path: /{id}
+          method: get
+          integration: lambda
+          request:
+            parameters:
+              paths:
+                id: true
+
 #    Define function environment variables here
 #    environment:
 #      variable2: value2

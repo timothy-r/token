@@ -1,15 +1,39 @@
 'use strict';
 
+var AWS = require('aws-sdk');
+AWS.config.update({region: process.env.SERVERLESS_REGION});
+var client = new AWS.DynamoDB.DocumentClient({apiVersion: '2012-08-10'});
+
+var uuid = require('uuid');
+
 module.exports.add = (event, context, callback) => {
-  const response = {
-    statusCode: 200,
-    body: JSON.stringify({
-      message: 'succcess'
-    })
+
+  const id = uuid.v4();
+
+  // create the url this token will be available at
+  // ought to provide this as an env var
+  // const url = 'https://' + apiId + '.execute-api.' + region + '.amazonaws.com/' + stage + / + id;
+
+  const params = {
+    Item : {
+      id: id,
+      data: event.body
+    },
+    TableName: process.env.TABLE_NAME
   };
 
-  callback(null, response);
-
+  client.put(params, function(err, result) {
+    if (err) {
+          return callback(err);
+      } else {
+          return callback(null, {
+            statusCode: 200,
+            body: JSON.stringify({
+              id: id
+            })
+          });
+      }
+  });
 };
 
 module.exports.get = (event, context, callback) => {

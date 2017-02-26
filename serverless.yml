@@ -22,35 +22,17 @@ provider:
   environment:
     TABLE_NAME: tjr_tokens
 
-# you can overwrite defaults here
   stage: dev
   region: eu-west-1
 
-# you can add statements to the Lambda function's IAM Role here
-#  iamRoleStatements:
-#    - Effect: "Allow"
-#      Action:
-#        - "s3:ListBucket"
-#      Resource: { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ServerlessDeploymentBucket" } ] ]  }
-#    - Effect: "Allow"
-#      Action:
-#        - "s3:PutObject"
-#      Resource:
-#        Fn::Join:
-#          - ""
-#          - - "arn:aws:s3:::"
-#            - "Ref" : "ServerlessDeploymentBucket"
-
-# you can define service wide environment variables here
-#  environment:
-#    variable1: value1
-
-# you can add packaging information here
 package:
   include:
     - node_modules/uuid/**
   exclude:
-    - node_modules
+    - node_modules/**
+    - tests/**
+    - docs/**
+    - README.md
 
 functions:
   add:
@@ -98,7 +80,7 @@ functions:
 
 resources:
   Resources:
-    usersTable:
+    tokenTable:
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: tjr_tokens

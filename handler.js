@@ -6,6 +6,9 @@ var client = new AWS.DynamoDB.DocumentClient({apiVersion: '2012-08-10'});
 
 var uuid = require('uuid');
 
+/**
+ * create a new token, generate the id here
+ */
 module.exports.add = (event, context, callback) => {
 
   const id = uuid.v4();
@@ -36,6 +39,9 @@ module.exports.add = (event, context, callback) => {
   });
 };
 
+/**
+ * get a token by its id
+ */
 module.exports.get = (event, context, callback) => {
 
   const params = {
@@ -50,7 +56,7 @@ module.exports.get = (event, context, callback) => {
     if (err) {
       return callback(err);
     } else if (result.Item) {
-      return callback(null, result.Item);
+      return callback(null, result.Item.data);
     } else {
       return callback('not-found');
     }
@@ -58,6 +64,9 @@ module.exports.get = (event, context, callback) => {
 
 };
 
+/**
+ * Update an exisiting token
+ */
 module.exports.update = (event, context, callback) => {
 
   const params = {
@@ -73,6 +82,9 @@ module.exports.update = (event, context, callback) => {
 
 };
 
+/**
+ * delete a token
+ */
 module.exports.delete = (event, context, callback) => {
 
   const params = {
@@ -83,7 +95,12 @@ module.exports.delete = (event, context, callback) => {
     TableName: process.env.TABLE_NAME
   };
 
-
-  callback(null, {});
+  client.delete(params, function(err, result){
+    if (err) {
+      return callback(err);
+    } else {
+      return callback(null, event.path.id);
+    }
+  });
 
 };

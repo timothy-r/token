@@ -36,7 +36,7 @@ describe('Token service', function() {
                         .get(path + body.id)
                         .expect(function(res){
                             assert.isTrue(
-                                res.body.data.hasOwnProperty('creator'),
+                                res.body.hasOwnProperty('creator'),
                                 "Expected token object to have 'creator' property: " + JSON.stringify(res.body)
                             );
                         })

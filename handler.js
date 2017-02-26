@@ -37,14 +37,24 @@ module.exports.add = (event, context, callback) => {
 };
 
 module.exports.get = (event, context, callback) => {
-  const response = {
-    statusCode: 200,
-    body: JSON.stringify({
-      message: 'succcess'
-    })
+
+  const params = {
+    Key: {
+      id: event.id
+    },
+
+    TableName: process.env.TABLE_NAME
   };
 
-  callback(null, response);
+  client.get(params, function(err, result){
+    if (err) {
+      return callback(err);
+    } else if (result.Item) {
+      return callback(null, result.Item);
+    } else {
+      return callback('not-found');
+    }
+  });
 
 };
 

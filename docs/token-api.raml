@@ -1,0 +1,68 @@
+#%RAML 1.0
+title: Tokens
+version: v1
+mediaType: application/json
+protocols: [ HTTPS ]
+types:
+  Role:
+    properties:
+      type:
+      members:
+/:
+  post:
+    description: Generates a new token
+    body:
+      application/json:
+        example: |
+          {
+            "user": "brian@things.net",
+            "state": "active",
+            "count": 0
+          }
+    responses:
+      200:
+        description: The token was created
+        headers:
+          Location:
+            description: The url of the new token
+          
+/{token}:
+  get:
+    description: Gets a token
+    responses:
+      200:
+        headers:
+          ETag:
+            description: Unique tag of the state of the resource
+            example: md5 sum of the token object
+        body:
+          application/json:
+            example: |
+              {
+                "user": "brian@things.net",
+                "state": "active",
+                "count": 0
+              }
+      404:
+        description: Token not found
+  patch:
+    description: Updates a token
+    headers:
+     If-Match:
+       description: Send the ETag of the token in the response to GET
+    body:
+      application/json:
+        example: |
+          {
+            "count": 1
+          }
+    responses:
+      200:
+      404:
+        description: Token not found
+      412:
+        description: Token has changed since last time the  token was read by client
+  delete:
+    description: Removes a token
+    responses:
+      200:

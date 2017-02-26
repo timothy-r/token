@@ -38,8 +38,6 @@ module.exports.add = (event, context, callback) => {
 
 module.exports.get = (event, context, callback) => {
 
-  console.log(JSON.stringify(event));
-
   const params = {
     Key: {
       id: event.path.id
@@ -61,25 +59,31 @@ module.exports.get = (event, context, callback) => {
 };
 
 module.exports.update = (event, context, callback) => {
-  const response = {
-    statusCode: 200,
-    body: JSON.stringify({
-      message: 'succcess'
-    })
+
+  const params = {
+    Key: {
+      id: event.path.id
+    },
+
+    TableName: process.env.TABLE_NAME
   };
 
-  callback(null, response);
+
+  callback(null, {});
 
 };
 
 module.exports.delete = (event, context, callback) => {
-  const response = {
-    statusCode: 200,
-    body: JSON.stringify({
-      message: 'succcess'
-    })
+
+  const params = {
+    Key: {
+      id: event.path.id
+    },
+
+    TableName: process.env.TABLE_NAME
   };
 
-  callback(null, response);
+
+  callback(null, {});
 
 };

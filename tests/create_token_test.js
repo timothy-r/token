@@ -27,12 +27,16 @@ describe('Token service', function() {
                         return done(err);
                     }
 
+                    console.log(result.res.text);
+
+                    var body = JSON.parse(result.res.text);
+
                     // get the token url from response header
                     request(token_endpoint)
-                        .get(path)
+                        .get(path + body.id)
                         .expect(function(res){
                             assert.isTrue(
-                                res.body.hasOwnProperty('creator'),
+                                res.body.data.hasOwnProperty('creator'),
                                 "Expected token object to have 'creator' property: " + JSON.stringify(res.body)
                             );
                         })

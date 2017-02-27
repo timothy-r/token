@@ -37,6 +37,10 @@ describe('Token service', function() {
                                 res.body.hasOwnProperty('creator'),
                                 "Expected token object to have 'creator' property: " + JSON.stringify(res.body)
                             );
+                            assert.isTrue(
+                                res.headers.hasOwnProperty('ETag'),
+                                "Expected ETag header to be set: " + JSON.stringify(res.headers)
+                            );
                         })
                         .expect(200, done);
                 });

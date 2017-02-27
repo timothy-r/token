@@ -36,14 +36,14 @@ package:
 
 functions:
   add:
-    handler: handler.add
+    handler: add.handler
     events:
       - http:
           path: /
           method: post
 
   get:
-    handler: handler.get
+    handler: get.handler
     events:
       - http:
           path: /{id}
@@ -55,7 +55,7 @@ functions:
                 id: true
 
   update:
-    handler: handler.update
+    handler: update.handler
     events:
       - http:
           path: /{id}
@@ -67,7 +67,7 @@ functions:
                 id: true
 
   delete:
-    handler: handler.delete
+    handler: delete.handler
     events:
       - http:
           path: /{id}

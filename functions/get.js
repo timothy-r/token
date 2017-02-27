@@ -24,7 +24,7 @@ module.exports.handler = (event, context, callback) => {
     if (err) {
       const response = {
         statusCode: 500,
-        body: JSON.stringify({"error" : err})
+        body: JSON.stringify(err)
       };
       return callback(null, response);
     } else if (result.Item) {

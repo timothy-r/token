@@ -21,6 +21,8 @@ module.exports.handler = (event, context, callback) => {
 
   const url = 'https://' + host + '/' + stage + '/' + id;
 
+  console.log(event);
+
   const params = {
     Item : {
       id: id,
@@ -31,7 +33,7 @@ module.exports.handler = (event, context, callback) => {
 
   client.put(params, function(err, result) {
     if (err) {
-          return callback('[500]', err);
+          return callback(null, JSON.stringify(err));
       } else {
           return callback(null, {
             statusCode: 200,

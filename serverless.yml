@@ -48,10 +48,6 @@ functions:
       - http:
           path: /{id}
           method: get
-          request:
-            parameters:
-              paths:
-                id: true
 
   update:
     handler: functions/update.handler
@@ -59,10 +55,6 @@ functions:
       - http:
           path: /{id}
           method: patch
-          request:
-            parameters:
-              paths:
-                id: true
 
   delete:
     handler: functions/delete.handler
@@ -70,10 +62,6 @@ functions:
       - http:
           path: /{id}
           method: delete
-          request:
-            parameters:
-              paths:
-                id: true
 
 resources:
   Resources:

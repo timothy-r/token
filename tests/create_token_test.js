@@ -69,7 +69,6 @@ describe('Token service', function() {
                    }
                    // get the token url from response header
                    var token_url = result.res.headers.location;
-                   console.log(token_url);
 
                    request('')
                        .delete(token_url)

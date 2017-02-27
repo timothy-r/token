@@ -5,7 +5,6 @@ AWS.config.update({region: process.env.SERVERLESS_REGION});
 const client = new AWS.DynamoDB.DocumentClient({apiVersion: '2012-08-10'});
 
 const crypto = require('crypto');
-const hash = crypto.createHash('md5');
 
 /**
  * get a token by its id
@@ -24,26 +23,35 @@ module.exports.handler = (event, context, callback) => {
     if (err) {
       const response = {
         statusCode: 500,
-        body: JSON.stringify({"error" : err})
+        body: JSON.stringify(err)
       };
       return callback(null, response);
+
     } else if (result.Item) {
 
+      var hash = crypto.createHash('md5');
+
       // add an ETag header
-      const data = result.Item.data;
-      const etag = hash.update(JSON.stringify(data)).digest('hex');
+      const data = JSON.stringify(result.Item.data);
+      const etag = hash.update(data).digest('hex');
 
       const response = {
         statusCode: 200,
         headers: {
           "ETag" : etag
         },
-        body: JSON.stringify(data)
+        body: data
       };
 
       return callback(null, response);
+
     } else {
-      return callback(null, {statusCode: 404, body: ""});
+
+      const response = {
+        statusCode: 404,
+        body: ""
+      };
+      return callback(null, response);
     }
   });
 };

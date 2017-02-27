@@ -19,9 +19,19 @@ module.exports.handler = (event, context, callback) => {
 
   client.delete(params, function(err, result){
     if (err) {
-      return callback('[500]', err);
+      return callback(null,
+        {
+          statusCode: 500,
+          body: JSON.stringify(err)
+        }
+      );
     } else {
-      return callback(null, event.path.id);
+      return callback(null,
+        {
+          statusCode: 200,
+          body: JSON.stringify({id: event.pathParameters.id})
+        }
+      );
     }
   });
 

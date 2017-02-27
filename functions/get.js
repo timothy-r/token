@@ -22,7 +22,11 @@ module.exports.handler = (event, context, callback) => {
 
   client.get(params, function(err, result){
     if (err) {
-      return callback('[500]', err);
+      const response = {
+        statusCode: 500,
+        body: {"error" : err}
+      };
+      return callback('[500]', response);
     } else if (result.Item) {
 
       // add an ETag header
@@ -39,7 +43,7 @@ module.exports.handler = (event, context, callback) => {
 
       return callback(null, response);
     } else {
-      return callback('[404]', {});
+      return callback('[404]', {statusCode: 404});
     }
   });
 };

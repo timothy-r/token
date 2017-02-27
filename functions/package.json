@@ -1,0 +1,13 @@
+{
+  "name": "Token",
+  "version": "1.0.0",
+  "description": "Codebase for token API",
+  "author": "Tim Rodger",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "uuid": "^2.0.2"
+  },
+  "scripts": {
+  }
+}

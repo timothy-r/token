@@ -1,7 +1,7 @@
 {
   "name": "Token",
-  "version": "0.0.1",
-  "description": "Codebase for token API",
+  "version": "1.0.0",
+  "description": "Dev & test codebase for token API",
   "author": "Tim Rodger",
   "license": "MIT",
   "private": true,

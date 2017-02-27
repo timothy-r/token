@@ -27,7 +27,7 @@ provider:
 
 package:
   include:
-    - node_modules/uuid/**
+    - functions/node_modules/uuid/**
   exclude:
     - node_modules/**
     - tests/**
@@ -36,14 +36,14 @@ package:
 
 functions:
   add:
-    handler: add.handler
+    handler: functions/add.handler
     events:
       - http:
           path: /
           method: post
 
   get:
-    handler: get.handler
+    handler: functions/get.handler
     events:
       - http:
           path: /{id}
@@ -55,7 +55,7 @@ functions:
                 id: true
 
   update:
-    handler: update.handler
+    handler: functions/update.handler
     events:
       - http:
           path: /{id}
@@ -67,7 +67,7 @@ functions:
                 id: true
 
   delete:
-    handler: delete.handler
+    handler: functions/delete.handler
     events:
       - http:
           path: /{id}

@@ -25,19 +25,19 @@ module.exports.handler = (event, context, callback) => {
       return callback('[500]', err);
     } else if (result.Item) {
 
-      const data = result.Item.data;
-      hash.update(data);
-
       // add an ETag header
-      return callback(null, {
+      const data = result.Item.data;
+      const etag = hash.update(JSON.stringify(data)).digest('hex');
+
+      const response = {
         statusCode: 200,
         headers: {
-          "ETag" : hash.digest('hex')
+          "ETag" : etag
         },
         body: data
-      });
+      };
 
-      //return callback(null, result.Item.data);
+      return callback(null, response);
     } else {
       return callback('[404]', {});
     }

@@ -13,15 +13,13 @@ module.exports.handler = (event, context, callback) => {
 
   const id = uuid.v4();
 
-  let host = event.headers.Host;
-  let stage = event.requestContext.stage;
+  const host = event.headers.Host;
+  const stage = event.requestContext.stage;
 
   // create the url this token will be available at
   // ought to provide this as an env var?
 
   const url = 'https://' + host + '/' + stage + '/' + id;
-
-  console.log(event);
 
   const params = {
     Item : {
@@ -33,17 +31,23 @@ module.exports.handler = (event, context, callback) => {
 
   client.put(params, function(err, result) {
     if (err) {
-          return callback(null, JSON.stringify(err));
+      return callback(null,
+          {
+            statusCode: 500,
+            body: JSON.stringify(err)
+          }
+          );
       } else {
-          return callback(null, {
-            statusCode: 200,
-            headers: {
-              "Location" : url
-            },
-            body: JSON.stringify({
-              id: id
-            })
-          });
+        return callback(null,
+            {
+              statusCode: 200, 
+              headers: {
+                "Location" : url
+              },
+              body: JSON.stringify({
+                id: id
+              })
+            });
       }
   });
 };

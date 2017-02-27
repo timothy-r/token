@@ -2,7 +2,7 @@ const request = require('supertest');
 const chai = require('chai');
 const assert = chai.assert;
 
-var token_endpoint = process.env.TOKEN_ENDPOINT;
+const token_endpoint = process.env.TOKEN_ENDPOINT;
 
 describe('Token service', function() {
 
@@ -28,17 +28,17 @@ describe('Token service', function() {
                     }
 
                     // get the token url from response header
-                    var token_endpoint = result.res.headers.location;
+                    var token_url = result.res.headers.location;
 
                     request('')
-                        .get(token_endpoint)
+                        .get(token_url)
                         .expect(function(res){
                             assert.isTrue(
                                 res.body.hasOwnProperty('creator'),
                                 "Expected token object to have 'creator' property: " + JSON.stringify(res.body)
                             );
                             assert.isTrue(
-                                res.headers.hasOwnProperty('ETag'),
+                                res.headers.hasOwnProperty('etag'),
                                 "Expected ETag header to be set: " + JSON.stringify(res.headers)
                             );
                         })
@@ -68,17 +68,18 @@ describe('Token service', function() {
                        return done(err);
                    }
                    // get the token url from response header
-                   var token_endpoint = result.res.headers.location;
+                   var token_url = result.res.headers.location;
+                   console.log(token_url);
 
                    request('')
-                       .delete(token_endpoint)
+                       .delete(token_url)
                        .expect(200)
                        .end(function(err, result){
                           if (err){
                               return done(err);
                           }
                           request('')
-                              .get(token_endpoint)
+                              .get(token_url)
                               .expect(404, done)
                        });
                });

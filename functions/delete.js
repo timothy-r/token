@@ -11,7 +11,7 @@ module.exports.handler = (event, context, callback) => {
 
   const params = {
     Key: {
-      id: event.path.id
+      id: event.pathParameters.id
     },
 
     TableName: process.env.TABLE_NAME

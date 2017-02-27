@@ -14,7 +14,7 @@ module.exports.handler = (event, context, callback) => {
 
   const params = {
     Key: {
-      id: event.path.id
+      id: event.pathParameters.id
     },
 
     TableName: process.env.TABLE_NAME
@@ -24,9 +24,9 @@ module.exports.handler = (event, context, callback) => {
     if (err) {
       const response = {
         statusCode: 500,
-        body: {"error" : err}
+        body: JSON.stringify({"error" : err})
       };
-      return callback('[500]', response);
+      return callback(null, response);
     } else if (result.Item) {
 
       // add an ETag header
@@ -38,12 +38,12 @@ module.exports.handler = (event, context, callback) => {
         headers: {
           "ETag" : etag
         },
-        body: data
+        body: JSON.stringify(data)
       };
 
       return callback(null, response);
     } else {
-      return callback('[404]', {statusCode: 404});
+      return callback(null, {statusCode: 404, body: ""});
     }
   });
 };

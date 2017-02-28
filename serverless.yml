@@ -49,13 +49,6 @@ functions:
           path: /{id}
           method: get
 
-  update:
-    handler: functions/update.handler
-    events:
-      - http:
-          path: /{id}
-          method: patch
-
   delete:
     handler: functions/delete.handler
     events:

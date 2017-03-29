@@ -1,8 +1,6 @@
 'use strict';
 
-var AWS = require('aws-sdk');
-AWS.config.update({region: process.env.SERVERLESS_REGION});
-const client = new AWS.DynamoDB.DocumentClient({apiVersion: '2012-08-10'});
+const db = require('../lib/db');
 
 const crypto = require('crypto');
 
@@ -19,7 +17,7 @@ module.exports.handler = (event, context, callback) => {
         TableName: process.env.TABLE_NAME
     };
 
-    client.get(params, function(err, result){
+    db.get(params, function(err, result){
 
         let response = {
             statusCode: null,

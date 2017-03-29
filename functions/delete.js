@@ -2,16 +2,13 @@
 
 const db = require('../lib/db');
 
-//var AWS = require('aws-sdk');
-//AWS.config.update({region: process.env.SERVERLESS_REGION});
-//var client = new AWS.DynamoDB.DocumentClient({apiVersion: '2012-08-10'});
-
 /**
  * delete a token
  */
 module.exports.handler = (event, context, callback) => {
 
     const id = event.pathParameters.id;
+
     db.delete(id, function(err, result) {
 
         let response = {

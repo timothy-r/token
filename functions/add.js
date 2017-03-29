@@ -15,7 +15,7 @@ module.exports.handler = (event, context, callback) => {
     const data = JSON.parse(event.body);
 
     // first try to get this token - if it exists only allow overwrites if etag matches
-    
+
     db.put(id, data, function(err, result) {
 
         let response = {

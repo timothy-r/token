@@ -8,29 +8,35 @@ const token_endpoint = process.env.TOKEN_ENDPOINT;
 
 describe('Token service', function() {
 
-    describe('Add token', function() {
-
-        it('creates a token', function (done) {
-
-            const id = uuid.v4();
-
+    describe('Get token', () => {
+        it('Returns 404 if token does not exist', (done) => {
             request(token_endpoint)
-                .put('/tokens/' + id)
+                .get('/tokens/not-a-token-id')
+                .expect(404, done);
+        });
+    });
+
+    describe('Add token', () => {
+
+        it('creates a token', (done) => {
+
+            const token_url = token_endpoint + '/tokens/' + uuid.v4();
+
+            request('')
+                .put(token_url)
                 .set('Content-Type', 'application/json')
                 .send(
                     {
                         "creator": "tim.rodger@sputnik.net",
                         "status": "active",
-                        "count" : 0
+                        "count" : 0,
+                        "created" : Date.now()
                     })
                 .expect(200)
                 .end(function(err, result){
                     if (err) {
                         return done(err);
                     }
-
-                    // get the token url from response header
-                    var token_url = token_endpoint + '/tokens/' + id;
 
                     console.log(token_url);
 
@@ -53,27 +59,26 @@ describe('Token service', function() {
         });
     });
 
-    describe('Delete token', function() {
-       it('deletes a token', function(done){
+    describe('Delete token', () => {
+       it('deletes a token', (done) => {
 
-           const id = uuid.v4();
+           const token_url = token_endpoint + '/tokens/' + uuid.v4();
 
-           request(token_endpoint)
-               .put('/tokens/' + id)
+           request('')
+               .put(token_url)
                .set('Content-Type', 'application/json')
                .send(
                    {
                        "creator": "tim.rodger@sputnik.net",
                        "status": "active",
-                       "count" : 0
+                       "count" : 0,
+                       "created" : Date.now()
                    })
                .expect(200)
                .end(function(err, result){
                    if (err) {
                        return done(err);
                    }
-
-                   var token_url = token_endpoint + '/tokens/' + id;
 
                    request('')
                        .delete(token_url)

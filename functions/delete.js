@@ -1,23 +1,18 @@
 'use strict';
 
-var AWS = require('aws-sdk');
-AWS.config.update({region: process.env.SERVERLESS_REGION});
-var client = new AWS.DynamoDB.DocumentClient({apiVersion: '2012-08-10'});
+const db = require('../lib/db');
+
+//var AWS = require('aws-sdk');
+//AWS.config.update({region: process.env.SERVERLESS_REGION});
+//var client = new AWS.DynamoDB.DocumentClient({apiVersion: '2012-08-10'});
 
 /**
  * delete a token
  */
 module.exports.handler = (event, context, callback) => {
 
-    const params = {
-        Key: {
-            id: event.pathParameters.id
-        },
-
-        TableName: process.env.TABLE_NAME
-    };
-
-    client.delete(params, function(err, result) {
+    const id = event.pathParameters.id;
+    db.delete(id, function(err, result) {
 
         let response = {
             statusCode: null,
@@ -30,7 +25,7 @@ module.exports.handler = (event, context, callback) => {
 
         } else {
             response.statusCode =  200;
-            response.body = JSON.stringify({id: event.pathParameters.id})
+            response.body = JSON.stringify({id: id})
         }
 
         return callback(null, response);

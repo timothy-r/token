@@ -3,6 +3,7 @@ const chai = require('chai');
 const assert = chai.assert;
 const uuid = require('uuid');
 
+// expected format https://lck74cbmxh.execute-api.eu-west-1.amazonaws.com/dev
 const token_endpoint = process.env.TOKEN_ENDPOINT;
 
 describe('Token service', function() {

@@ -11,47 +11,44 @@ const crypto = require('crypto');
  */
 module.exports.handler = (event, context, callback) => {
 
-  const params = {
-    Key: {
-      id: event.pathParameters.id
-    },
-
-    TableName: process.env.TABLE_NAME
-  };
-
-  client.get(params, function(err, result){
-    if (err) {
-      const response = {
-        statusCode: 500,
-        body: JSON.stringify(err)
-      };
-      return callback(null, response);
-
-    } else if (result.Item) {
-
-      var hash = crypto.createHash('md5');
-
-      // add an ETag header
-      const data = JSON.stringify(result.Item.data);
-      const etag = hash.update(data).digest('hex');
-
-      const response = {
-        statusCode: 200,
-        headers: {
-          "ETag" : etag
+    const params = {
+        Key: {
+            id: event.pathParameters.id
         },
-        body: data
-      };
 
-      return callback(null, response);
+        TableName: process.env.TABLE_NAME
+    };
 
-    } else {
+    client.get(params, function(err, result){
 
-      const response = {
-        statusCode: 404,
-        body: ""
-      };
-      return callback(null, response);
-    }
-  });
+        let response = {
+            statusCode: null,
+            body: null
+        };
+
+        if (err) {
+            response.statusCode = 500;
+            response.body = JSON.stringify(err);
+
+        } else if (result.Item) {
+
+            var hash = crypto.createHash('md5');
+
+            // add an ETag header
+            const data = JSON.stringify(result.Item.data);
+            const etag = hash.update(data).digest('hex');
+
+            response.statusCode = 200;
+            response.body = data;
+            response.headers = {
+                ETag : etag
+            };
+
+        } else {
+
+            response.statusCode = 404;
+        }
+
+        return callback(null, response);
+    });
 };

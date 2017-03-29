@@ -40,21 +40,21 @@ functions:
     handler: functions/add.handler
     events:
       - http:
-          path: /{id}
+          path: /tokens/{id}
           method: put
 
   get:
     handler: functions/get.handler
     events:
       - http:
-          path: /{id}
+          path: /tokens/{id}
           method: get
 
   delete:
     handler: functions/delete.handler
     events:
       - http:
-          path: /{id}
+          path: /tokens/{id}
           method: delete
 
 resources:

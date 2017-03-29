@@ -1,23 +1,16 @@
 'use strict';
 
 const db = require('../lib/db');
-
-const crypto = require('crypto');
+const hash = require('../lib/hash');
 
 /**
  * get a token by its id
  */
 module.exports.handler = (event, context, callback) => {
 
-    const params = {
-        Key: {
-            id: event.pathParameters.id
-        },
+    const id = event.pathParameters.id;
 
-        TableName: process.env.TABLE_NAME
-    };
-
-    db.get(params, function(err, result){
+    db.get(id, function(err, result){
 
         let response = {
             statusCode: null,
@@ -30,11 +23,9 @@ module.exports.handler = (event, context, callback) => {
 
         } else if (result.Item) {
 
-            var hash = crypto.createHash('md5');
-
             // add an ETag header
             const data = JSON.stringify(result.Item.data);
-            const etag = hash.update(data).digest('hex');
+            const etag = hash.md5(data);
 
             response.statusCode = 200;
             response.body = data;

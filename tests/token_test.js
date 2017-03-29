@@ -14,7 +14,7 @@ describe('Token service', function() {
             const id = uuid.v4();
 
             request(token_endpoint)
-                .put('/' + id)
+                .put('/tokens/' + id)
                 .set('Content-Type', 'application/json')
                 .send(
                     {
@@ -29,7 +29,7 @@ describe('Token service', function() {
                     }
 
                     // get the token url from response header
-                    var token_url = token_endpoint + '/' + id;
+                    var token_url = token_endpoint + '/tokens/' + id;
 
                     console.log(token_url);
 
@@ -58,7 +58,7 @@ describe('Token service', function() {
            const id = uuid.v4();
 
            request(token_endpoint)
-               .put('/' + id)
+               .put('/tokens/' + id)
                .set('Content-Type', 'application/json')
                .send(
                    {
@@ -72,7 +72,7 @@ describe('Token service', function() {
                        return done(err);
                    }
 
-                   var token_url = token_endpoint + '/' + id;
+                   var token_url = token_endpoint + '/tokens/' + id;
 
                    request('')
                        .delete(token_url)

@@ -5,7 +5,7 @@ AWS.config.update({region: process.env.SERVERLESS_REGION});
 var client = new AWS.DynamoDB.DocumentClient({apiVersion: '2012-08-10'});
 
 /**
- * create a new token, generate the id, respond with Location header
+ * store a new token
  */
 module.exports.handler = (event, context, callback) => {
 

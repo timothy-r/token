@@ -27,6 +27,9 @@ provider:
 
 package:
   exclude:
+    - .idea/**
+    - .npmignore
+    - package.json
     - node_modules/**
     - tests/**
     - docs/**

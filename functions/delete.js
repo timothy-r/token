@@ -9,30 +9,31 @@ var client = new AWS.DynamoDB.DocumentClient({apiVersion: '2012-08-10'});
  */
 module.exports.handler = (event, context, callback) => {
 
-  const params = {
-    Key: {
-      id: event.pathParameters.id
-    },
+    const params = {
+        Key: {
+            id: event.pathParameters.id
+        },
 
-    TableName: process.env.TABLE_NAME
-  };
+        TableName: process.env.TABLE_NAME
+    };
 
-  client.delete(params, function(err, result){
-    if (err) {
-      return callback(null,
-        {
-          statusCode: 500,
-          body: JSON.stringify(err)
+    client.delete(params, function(err, result) {
+
+        let response = {
+            statusCode: null,
+            body: null
+        };
+
+        if (err) {
+            response.statusCode = 500;
+            response.body = JSON.stringify(err);
+
+        } else {
+            response.statusCode =  200;
+            response.body = JSON.stringify({id: event.pathParameters.id})
         }
-      );
-    } else {
-      return callback(null,
-        {
-          statusCode: 200,
-          body: JSON.stringify({id: event.pathParameters.id})
-        }
-      );
-    }
-  });
+
+        return callback(null, response);
+    });
 
 };

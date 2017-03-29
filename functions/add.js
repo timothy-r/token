@@ -11,43 +11,43 @@ var uuid = require('uuid');
  */
 module.exports.handler = (event, context, callback) => {
 
-  const id = uuid.v4();
+    const id = uuid.v4();
 
-  const host = event.headers.Host;
-  const stage = event.requestContext.stage;
+    const host = event.headers.Host;
+    const stage = event.requestContext.stage;
 
-  // create the url this token will be available at
-  // ought to provide this as an env var?
+    // create the url this token will be available at
+    // ought to provide this as an env var?
 
-  const url = 'https://' + host + '/' + stage + '/' + id;
+    const url = 'https://' + host + '/' + stage + '/' + id;
 
-  const params = {
-    Item : {
-      id: id,
-      data: JSON.parse(event.body)
-    },
-    TableName: process.env.TABLE_NAME
-  };
+    const params = {
+        Item : {
+            id: id,
+            data: JSON.parse(event.body)
+        },
+        TableName: process.env.TABLE_NAME
+    };
 
-  client.put(params, function(err, result) {
-    if (err) {
-      return callback(null,
-          {
-            statusCode: 500,
-            body: JSON.stringify(err)
-          }
-          );
-      } else {
-        return callback(null,
-            {
-              statusCode: 200, 
-              headers: {
-                "Location" : url
-              },
-              body: JSON.stringify({
-                id: id
-              })
-            });
-      }
-  });
+    client.put(params, function(err, result) {
+
+        let response = {
+            statusCode: null,
+            body: null
+        };
+
+        if (err) {
+            response.statusCode = 500;
+            response.body = JSON.stringify(err);
+
+        } else {
+            response.statusCode =  200;
+            response.body = JSON.stringify({id: id});
+            response.headers = {
+                Location : url
+            };
+
+        }
+        return callback(null, response);
+    });
 };

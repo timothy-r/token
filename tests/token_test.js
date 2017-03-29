@@ -1,6 +1,7 @@
 const request = require('supertest');
 const chai = require('chai');
 const assert = chai.assert;
+const uuid = require('uuid');
 
 const token_endpoint = process.env.TOKEN_ENDPOINT;
 
@@ -10,10 +11,10 @@ describe('Token service', function() {
 
         it('creates a token', function (done) {
 
-            var path = '/';
+            const id = uuid.v4();
 
             request(token_endpoint)
-                .post(path)
+                .put('/' + id)
                 .set('Content-Type', 'application/json')
                 .send(
                     {
@@ -28,7 +29,9 @@ describe('Token service', function() {
                     }
 
                     // get the token url from response header
-                    var token_url = result.res.headers.location;
+                    var token_url = token_endpoint + '/' + id;
+
+                    console.log(token_url);
 
                     request('')
                         .get(token_url)
@@ -51,10 +54,11 @@ describe('Token service', function() {
 
     describe('Delete token', function() {
        it('deletes a token', function(done){
-           var path = '/';
+
+           const id = uuid.v4();
 
            request(token_endpoint)
-               .post(path)
+               .put('/' + id)
                .set('Content-Type', 'application/json')
                .send(
                    {
@@ -67,8 +71,8 @@ describe('Token service', function() {
                    if (err) {
                        return done(err);
                    }
-                   // get the token url from response header
-                   var token_url = result.res.headers.location;
+
+                   var token_url = token_endpoint + '/' + id;
 
                    request('')
                        .delete(token_url)

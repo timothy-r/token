@@ -26,8 +26,6 @@ provider:
   region: eu-west-1
 
 package:
-  include:
-    - functions/node_modules/uuid/**
   exclude:
     - node_modules/**
     - tests/**
@@ -39,8 +37,8 @@ functions:
     handler: functions/add.handler
     events:
       - http:
-          path: /
-          method: post
+          path: /{id}
+          method: put
 
   get:
     handler: functions/get.handler
@@ -71,20 +69,3 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
-
-
-#    Define function environment variables here
-#    environment:
-#      variable2: value2
-
-# you can add CloudFormation resource templates here
-#resources:
-#  Resources:
-#    NewResource:
-#      Type: AWS::S3::Bucket
-#      Properties:
-#        BucketName: my-new-bucket
-#  Outputs:
-#     NewOutput:
-#       Description: "Description for the output"
-#       Value: "Some output value"

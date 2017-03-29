@@ -3,14 +3,9 @@ title: Tokens
 version: v1
 mediaType: application/json
 protocols: [ HTTPS ]
-types:
-  Role:
-    properties:
-      type:
-      members:
-/:
-  post:
-    description: Generates a new token
+/{token}:
+  put:
+    description: Adds a new token
     body:
       application/json:
         example: |
@@ -22,11 +17,7 @@ types:
     responses:
       200:
         description: The token was created
-        headers:
-          Location:
-            description: The url of the new token
-          
-/{token}:
+
   get:
     description: Gets a token
     responses:

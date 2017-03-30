@@ -24,7 +24,7 @@ module.exports.handler = (event, context, callback) => {
 
         if (err) {
             console.error(err);
-            if (err.messsage == 'NoMatch') {
+            if (err.message == 'NoMatch') {
                 response.statusCode = 412;
             } else {
                 response.statusCode = 500;

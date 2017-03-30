@@ -67,7 +67,7 @@ describe('Token service', function() {
                 .set('Content-Type', 'application/json')
                 .send(
                     {
-                        "creator": "tim.rodger@sputnik.net",
+                        "creator": "1.rodger@sputnik.net",
                         "status": "active",
                         "count" : 0,
                         "created" : Date.now()
@@ -83,7 +83,7 @@ describe('Token service', function() {
                         .set('Content-Type', 'application/json')
                         .send(
                             {
-                                "creator": "frank.smithson@sputnik.net",
+                                "creator": "1.smithson@sputnik.net",
                                 "status": "deleted",
                                 "count" : 9,
                                 "created" : Date.now()
@@ -100,7 +100,7 @@ describe('Token service', function() {
                 .set('Content-Type', 'application/json')
                 .send(
                     {
-                        "creator": "tim.rodger@sputnik.net",
+                        "creator": "2.rodger@sputnik.net",
                         "status": "active",
                         "count" : 0,
                         "created" : Date.now()
@@ -117,7 +117,7 @@ describe('Token service', function() {
                         .set('If-Match', 'invalid')
                         .send(
                             {
-                                "creator": "frank.smithson@sputnik.net",
+                                "creator": "2.smithson@sputnik.net",
                                 "status": "deleted",
                                 "count" : 9,
                                 "created" : Date.now()
@@ -134,7 +134,7 @@ describe('Token service', function() {
                 .set('Content-Type', 'application/json')
                 .send(
                     {
-                        "creator": "tim.rodger@sputnik.net",
+                        "creator": "3.rodger@sputnik.net",
                         "status": "active",
                         "count" : 0,
                         "created" : Date.now()
@@ -161,7 +161,7 @@ describe('Token service', function() {
                                 .set('If-Match', etag)
                                 .send(
                                     {
-                                        "creator": "frank.smithson@sputnik.net",
+                                        "creator": "3.smithson@sputnik.net",
                                         "status": "deleted",
                                         "count" : 9,
                                         "created" : Date.now()
@@ -181,7 +181,7 @@ describe('Token service', function() {
                .set('Content-Type', 'application/json')
                .send(
                    {
-                       "creator": "tim.rodger@sputnik.net",
+                       "creator": "4.rodger@sputnik.net",
                        "status": "active",
                        "count" : 0,
                        "created" : Date.now()
@@ -228,7 +228,7 @@ describe('Token service', function() {
                 .set('Content-Type', 'application/json')
                 .send(
                     {
-                        "creator": "tim.rodger@sputnik.net",
+                        "creator": "5.rodger@sputnik.net",
                         "status": "active",
                         "count" : 0,
                         "created" : Date.now()
@@ -258,7 +258,7 @@ describe('Token service', function() {
                 .set('Content-Type', 'application/json')
                 .send(
                     {
-                        "creator": "tim.rodger@sputnik.net",
+                        "creator": "6.rodger@sputnik.net",
                         "status": "active",
                         "count" : 0,
                         "created" : Date.now()
@@ -289,7 +289,7 @@ describe('Token service', function() {
                 .set('Content-Type', 'application/json')
                 .send(
                     {
-                        "creator": "tim.rodger@sputnik.net",
+                        "creator": "7.rodger@sputnik.net",
                         "status": "active",
                         "count": 0,
                         "created": Date.now()
@@ -328,7 +328,7 @@ describe('Token service', function() {
                                         .expect(200)
                                         .end(function(err, result) {
                                             assert.isTrue(result.body.count == 1);
-                                            assert.isTrue(result.body.creator == "tim.rodger@sputnik.net");
+                                            assert.isTrue(result.body.creator == "7.rodger@sputnik.net");
                                             assert.isTrue(result.body.status == 'active');
                                             done();
                                         });

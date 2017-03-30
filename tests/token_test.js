@@ -213,4 +213,129 @@ describe('Token service', function() {
                 .expect(200, done);
         });
     });
+
+    describe('Patch token', () => {
+        it('fails for a missing token', (done) => {
+            request('')
+                .patch(token_url)
+                .expect(404, done);
+        });
+
+        it('prevents patching token without If-Match header', (done) => {
+
+            request('')
+                .put(token_url)
+                .set('Content-Type', 'application/json')
+                .send(
+                    {
+                        "creator": "tim.rodger@sputnik.net",
+                        "status": "active",
+                        "count" : 0,
+                        "created" : Date.now()
+                    })
+                .expect(200)
+                .end(function(err, result){
+                    if (err) {
+                        return done(err);
+                    }
+
+                    request('')
+                        .patch(token_url)
+                        .set('Content-Type', 'application/json')
+                        .send(
+                            {
+                                "count" : 9
+                            })
+                        .expect(412, done);
+                });
+
+        });
+
+        it('prevents patching token with invalid If-Match header', (done) => {
+
+            request('')
+                .put(token_url)
+                .set('Content-Type', 'application/json')
+                .send(
+                    {
+                        "creator": "tim.rodger@sputnik.net",
+                        "status": "active",
+                        "count" : 0,
+                        "created" : Date.now()
+                    })
+                .expect(200)
+                .end(function(err, result){
+                    if (err) {
+                        return done(err);
+                    }
+
+                    request('')
+                        .patch(token_url)
+                        .set('Content-Type', 'application/json')
+                        .set('If-Match', 'invalid')
+                        .send(
+                            {
+                                "count" : 9
+                            })
+                        .expect(412, done);
+                });
+
+        });
+
+        it('allow patching token with valid If-Match header', (done) => {
+
+            request('')
+                .put(token_url)
+                .set('Content-Type', 'application/json')
+                .send(
+                    {
+                        "creator": "tim.rodger@sputnik.net",
+                        "status": "active",
+                        "count": 0,
+                        "created": Date.now()
+                    })
+                .expect(200)
+                .end(function (err, result) {
+                    if (err) {
+                        return done(err);
+                    }
+
+                    request('')
+                        .get(token_url)
+                        .expect(200)
+                        .end(function (err, res) {
+                            if (err) {
+                                return done(err);
+                            }
+
+                            var etag = res.headers.etag;
+
+                            request('')
+                                .patch(token_url)
+                                .set('Content-Type', 'application/json')
+                                .set('If-Match', etag)
+                                .send(
+                                    {
+                                        "count": 1
+                                    })
+                                .expect(200)
+                                .end(function(err, result) {
+                                    if (err) {
+                                        return done(err);
+                                    }
+                                    request('')
+                                        .get(token_url)
+                                        .expect(200)
+                                        .end(function(err, result) {
+                                            assert.isTrue(result.body.count == 1);
+                                            assert.isTrue(result.body.creator == "tim.rodger@sputnik.net");
+                                            assert.isTrue(result.body.status == 'active');
+                                            done();
+                                        });
+                                });
+                        });
+                });
+            });
+
+        });
 });

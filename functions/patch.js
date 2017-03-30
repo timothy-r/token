@@ -35,10 +35,16 @@ module.exports.handler = (event, context, callback) => {
                 response.statusCode = 412;
                 return callback(null, response);
             }
+        } else {
+            response.statusCode = 404;
+            return callback(null, response);
         }
 
-        // go ahead and write
-        db.put(id, data, function(err, result) {
+        // update current token data with body of request
+        var newToken = Object.assign(result.Item.data, data);
+
+        // write edited token
+        db.put(id, newToken, function(err, result) {
 
             let response = {
                 statusCode: null,

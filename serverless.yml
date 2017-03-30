@@ -49,7 +49,12 @@ functions:
       - http:
           path: /tokens/{id}
           method: get
-
+  patch:
+    handler: functions/patch.handler
+    events:
+      - http:
+          path: /tokens/{id}
+          method: patch
   delete:
     handler: functions/delete.handler
     events:

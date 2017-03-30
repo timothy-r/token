@@ -38,7 +38,7 @@ describe('Token service', function() {
                         return done(err);
                     }
 
-                    console.log(token_url);
+                    //console.log(token_url);
 
                     request('')
                         .get(token_url)
@@ -55,6 +55,122 @@ describe('Token service', function() {
                         .expect(200, done);
                 });
 
+
+        });
+
+        it('prevents overwriting token without If-Match header', (done) => {
+            const token_url = token_endpoint + '/tokens/' + uuid.v4();
+
+            request('')
+                .put(token_url)
+                .set('Content-Type', 'application/json')
+                .send(
+                    {
+                        "creator": "tim.rodger@sputnik.net",
+                        "status": "active",
+                        "count" : 0,
+                        "created" : Date.now()
+                    })
+                .expect(200)
+                .end(function(err, result){
+                    if (err) {
+                        return done(err);
+                    }
+
+                    request('')
+                        .put(token_url)
+                        .set('Content-Type', 'application/json')
+                        .send(
+                            {
+                                "creator": "frank.smithson@sputnik.net",
+                                "status": "deleted",
+                                "count" : 9,
+                                "created" : Date.now()
+                            })
+                        .expect(412, done);
+                });
+
+        });
+
+        it('prevents overwriting token with invalid If-Match header', (done) => {
+            const token_url = token_endpoint + '/tokens/' + uuid.v4();
+
+            request('')
+                .put(token_url)
+                .set('Content-Type', 'application/json')
+                .send(
+                    {
+                        "creator": "tim.rodger@sputnik.net",
+                        "status": "active",
+                        "count" : 0,
+                        "created" : Date.now()
+                    })
+                .expect(200)
+                .end(function(err, result){
+                    if (err) {
+                        return done(err);
+                    }
+
+                    request('')
+                        .put(token_url)
+                        .set('Content-Type', 'application/json')
+                        .set('If-Match', 'invalid')
+                        .send(
+                            {
+                                "creator": "frank.smithson@sputnik.net",
+                                "status": "deleted",
+                                "count" : 9,
+                                "created" : Date.now()
+                            })
+                        .expect(412, done);
+                });
+
+        });
+
+        it('allow overwriting token with valid If-Match header', (done) => {
+
+            const token_url = token_endpoint + '/tokens/' + uuid.v4();
+
+            request('')
+                .put(token_url)
+                .set('Content-Type', 'application/json')
+                .send(
+                    {
+                        "creator": "tim.rodger@sputnik.net",
+                        "status": "active",
+                        "count" : 0,
+                        "created" : Date.now()
+                    })
+                .expect(200)
+                .end(function(err, result){
+                    if (err) {
+                        return done(err);
+                    }
+
+                    request('')
+                        .get(token_url)
+                        .expect(200)
+                        .end(function(err, res){
+                            if (err) {
+                                return done(err);
+                            }
+
+                            var etag = res.headers.etag;
+
+                            request('')
+                                .put(token_url)
+                                .set('Content-Type', 'application/json')
+                                .set('If-Match', etag)
+                                .send(
+                                    {
+                                        "creator": "frank.smithson@sputnik.net",
+                                        "status": "deleted",
+                                        "count" : 9,
+                                        "created" : Date.now()
+                                    })
+                                .expect(200, done);
+                        });
+                });
 
         });
     });
@@ -93,5 +209,14 @@ describe('Token service', function() {
                        });
                });
        });
+
+        it('succeeds with missing token', (done) => {
+
+            const token_url = token_endpoint + '/tokens/' + uuid.v4();
+
+            request('')
+                .delete(token_url)
+                .expect(200, done);
+        });
     });
 });

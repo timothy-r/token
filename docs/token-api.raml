@@ -43,6 +43,19 @@ protocols: [ HTTPS ]
               }
       404:
         description: Token not found
+  patch:
+    description: Updates an existing token
+    headers:
+      If-Match:
+        description: Current token Etag
+        required: true
+    responses:
+      200:
+        description: Token updated
+      404:
+        description: Token not found
+      412:
+        description: If-Match header invalid
   delete:
     description: Removes a token
     responses:

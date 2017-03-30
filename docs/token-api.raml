@@ -6,7 +6,7 @@ protocols: [ HTTPS ]
 
 /tokens/{token}:
   put:
-    description: Adds a new token
+    description: Sets a token, overwrites allowed
     body:
       application/json:
         example: |
@@ -17,7 +17,9 @@ protocols: [ HTTPS ]
           }
     responses:
       200:
-        description: The token was created
+        description: The token is set
+      412:
+        description: If-Match header invalid when writing to existing token
 
   get:
     description: Gets a token

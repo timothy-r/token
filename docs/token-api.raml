@@ -7,6 +7,10 @@ protocols: [ HTTPS ]
 /tokens/{token}:
   put:
     description: Sets a token, overwrites allowed
+    headers:
+      If-Match:
+        description: Must be current token Etag to allow overwriting
+        required: false
     body:
       application/json:
         example: |

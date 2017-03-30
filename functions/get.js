@@ -24,7 +24,7 @@ module.exports.handler = (event, context, callback) => {
         } else if (token) {
 
             response.statusCode = 200;
-            response.body = JSON.stringify(token);
+            response.body = JSON.stringify(token.data);
             response.headers = {
                 ETag : etag
             };

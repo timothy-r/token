@@ -35,11 +35,13 @@ module.exports.handler = (event, context, callback) => {
 
         } else if (token) {
 
+            var expires = token.ttl;
+
             // update current token data with body of request
-            var newToken = Object.assign(token, JSON.parse(event.body));
+            var newToken = Object.assign(token.data, JSON.parse(event.body));
 
             // write edited token
-            db.put(id, newToken, function (err, result) {
+            db.put(id, newToken, expires, function (err, result) {
 
                 let response = {
                     statusCode: null,

@@ -35,8 +35,14 @@ module.exports.handler = (event, context, callback) => {
 
         }
 
+        var expires = Date.now() +  (60 * 60 * 24 * 30);
+
+        if (token) {
+            expires = token.ttl;
+        }
+
         // go ahead and write
-        db.put(id, data, function(err, result) {
+        db.put(id, data, expires, function(err, result) {
 
             let response = {
                 statusCode: null,

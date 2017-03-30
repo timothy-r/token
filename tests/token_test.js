@@ -6,7 +6,13 @@ const uuid = require('uuid');
 // expected format https://lck74cbmxh.execute-api.eu-west-1.amazonaws.com/dev
 const token_endpoint = process.env.TOKEN_ENDPOINT;
 
+var token_url = '';
+
 describe('Token service', function() {
+
+    beforeEach(() => {
+        token_url = token_endpoint + '/tokens/' + uuid.v4();
+    });
 
     describe('Get token', () => {
         it('Returns 404 if token does not exist', (done) => {
@@ -19,8 +25,6 @@ describe('Token service', function() {
     describe('Add token', () => {
 
         it('creates a token', (done) => {
-
-            const token_url = token_endpoint + '/tokens/' + uuid.v4();
 
             request('')
                 .put(token_url)
@@ -37,8 +41,6 @@ describe('Token service', function() {
                     if (err) {
                         return done(err);
                     }
-
-                    //console.log(token_url);
 
                     request('')
                         .get(token_url)
@@ -59,7 +61,6 @@ describe('Token service', function() {
         });
 
         it('prevents overwriting token without If-Match header', (done) => {
-            const token_url = token_endpoint + '/tokens/' + uuid.v4();
 
             request('')
                 .put(token_url)
@@ -93,7 +94,6 @@ describe('Token service', function() {
         });
 
         it('prevents overwriting token with invalid If-Match header', (done) => {
-            const token_url = token_endpoint + '/tokens/' + uuid.v4();
 
             request('')
                 .put(token_url)
@@ -128,8 +128,6 @@ describe('Token service', function() {
         });
 
         it('allow overwriting token with valid If-Match header', (done) => {
-
-            const token_url = token_endpoint + '/tokens/' + uuid.v4();
 
             request('')
                 .put(token_url)
@@ -178,8 +176,6 @@ describe('Token service', function() {
     describe('Delete token', () => {
        it('deletes a token', (done) => {
 
-           const token_url = token_endpoint + '/tokens/' + uuid.v4();
-
            request('')
                .put(token_url)
                .set('Content-Type', 'application/json')
@@ -211,8 +207,6 @@ describe('Token service', function() {
        });
 
         it('succeeds with missing token', (done) => {
-
-            const token_url = token_endpoint + '/tokens/' + uuid.v4();
 
             request('')
                 .delete(token_url)

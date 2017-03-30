@@ -47,7 +47,6 @@ functions:
       - http:
           path: /tokens/{id}
           method: put
-
   get:
     handler: functions/get.handler
     events:
@@ -78,10 +77,14 @@ resources:
             AttributeType: S
           - AttributeName: ttl
             AttributeType: N
+          - AttributeName: md5Sum
+            AttributeType: S
         KeySchema:
           - AttributeName: id
             KeyType: HASH
           - AttributeName: ttl
+            KeyType: RANGE
+          - AttributeName: md5Sum
             KeyType: RANGE
         ProvisionedThroughput:
           ReadCapacityUnits: 1

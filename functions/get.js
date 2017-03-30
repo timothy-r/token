@@ -9,7 +9,7 @@ module.exports.handler = (event, context, callback) => {
 
     const id = event.pathParameters.id;
 
-    db.get(id, function(err, token, etag){
+    db.get(id, function(err, token){
 
         let response = {
             statusCode: null,
@@ -26,7 +26,7 @@ module.exports.handler = (event, context, callback) => {
             response.statusCode = 200;
             response.body = JSON.stringify(token.data);
             response.headers = {
-                ETag : etag
+                ETag : token.md5Sum
             };
 
         } else {

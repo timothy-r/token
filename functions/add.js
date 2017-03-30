@@ -8,7 +8,6 @@ const db = require('../lib/db');
 module.exports.handler = (event, context, callback) => {
 
     const id = event.pathParameters.id;
-    const data = JSON.parse(event.body);
     const etag = event.headers['If-Match'];
 
     /**
@@ -36,6 +35,7 @@ module.exports.handler = (event, context, callback) => {
         }
 
         var expires = Date.now() +  (60 * 60 * 24 * 30);
+        const data = JSON.parse(event.body);
 
         if (token) {
             expires = token.ttl;

@@ -17,6 +17,7 @@ module.exports.handler = (event, context, callback) => {
         };
 
         if (err) {
+            console.error(err);
             response.statusCode = 500;
             response.body = JSON.stringify(err);
 

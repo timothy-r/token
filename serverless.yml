@@ -2,8 +2,16 @@ service: token
 
 # use the stage from the cli if provided, otherwise fallback to the one in provider
 custom:
-  myStage: ${opt:stage, self:provider.stage}
-  tableName: ${self:service}_${self:custom.myStage}_tokens
+  stage: ${opt:stage, self:provider.stage}
+  region: ${opt:region, self:provider.region}
+  tableName: ${self:service}_${self:custom.stage}_tokens
+
+  # tokens expire after 30 days
+  tokenExpiry: 2592000
+
+  # configure read and write capacity
+  rcu: 1
+  wcu: 1
 
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
@@ -15,7 +23,7 @@ provider:
   memorySize: 128
   iamRoleStatements:
     - Effect: Allow
-      Action: # Gives permission to DynamoDB tables in a specific region
+      Action: # Gives permission on the DynamoDB table
         - dynamodb:DescribeTable
         - dynamodb:Query
         - dynamodb:Scan
@@ -23,9 +31,10 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
-      Resource: "arn:aws:dynamodb:eu-west-1:*:*"
+      Resource: "arn:aws:dynamodb:${self:custom.region}:*:table/${self:custom.tableName}"
   environment:
     TABLE_NAME: ${self:custom.tableName}
+    TOKEN_EXPIRY: ${self:custom.tokenExpiry}
 
   stage: dev
   region: eu-west-1
@@ -79,5 +88,5 @@ resources:
           - AttributeName: id
             KeyType: HASH
         ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
+          ReadCapacityUnits: ${self:custom.rcu}
+          WriteCapacityUnits: ${self:custom.wcu}

@@ -1,0 +1,92 @@
+maxRetries = 5
+
+Complete report @ 2017-03-31T14:23:45.072Z
+  Scenarios launched:  200
+  Scenarios completed: 200
+  Requests completed:  200
+  RPS sent: 19.14
+  Request latency:
+    min: 78
+    max: 409.2
+    median: 133.4
+    p95: 243.2
+    p99: 330.1
+  Scenario duration:
+    min: 79.1
+    max: 438.6
+    median: 134.6
+    p95: 244.7
+    p99: 332.1
+  Scenario counts:
+    0: 200 (100%)
+  Codes:
+    200: 200
+
+maxRetries = 0
+Complete report @ 2017-03-31T14:25:02.659Z
+  Scenarios launched:  200
+  Scenarios completed: 200
+  Requests completed:  200
+  RPS sent: 19.16
+  Request latency:
+    min: 89.9
+    max: 6371
+    median: 242.2
+    p95: 6158.4
+    p99: 6348
+  Scenario duration:
+    min: 91
+    max: 6372.3
+    median: 243.9
+    p95: 6160.6
+    p99: 6349.8
+  Scenario counts:
+    0: 200 (100%)
+  Codes:
+    200: 200
+
+
+Complete report @ 2017-03-31T14:25:54.099Z
+  Scenarios launched:  303
+  Scenarios completed: 303
+  Requests completed:  303
+  RPS sent: 28.97
+  Request latency:
+    min: 74.5
+    max: 789.2
+    median: 124.5
+    p95: 244.4
+    p99: 346.2
+  Scenario duration:
+    min: 75.5
+    max: 790.3
+    median: 126.2
+    p95: 247.1
+    p99: 350.4
+  Scenario counts:
+    0: 303 (100%)
+  Codes:
+    200: 303
+
+
+Complete report @ 2017-03-31T14:27:12.088Z
+  Scenarios launched:  400
+  Scenarios completed: 400
+  Requests completed:  400
+  RPS sent: 38.24
+  Request latency:
+    min: 73.1
+    max: 1449.6
+    median: 215.8
+    p95: 583.5
+    p99: 1366.8
+  Scenario duration:
+    min: 74.2
+    max: 1451.5
+    median: 217.3
+    p95: 588.7
+    p99: 1368.4
+  Scenario counts:
+    0: 400 (100%)
+  Codes:
+    200: 400

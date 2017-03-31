@@ -1,0 +1,13 @@
+config:
+  target: 'https://bxhowxbojc.execute-api.eu-west-1.amazonaws.com/dev'
+  phases:
+    - duration: 10
+      arrivalRate: 40
+  defaults:
+    headers:
+      x-my-service-auth: ''
+
+scenarios:
+  - flow:
+    - get:
+        url: "/tokens/51a22ede-356b-4ee1-ad6f-4d701d6fe1df"

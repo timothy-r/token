@@ -1,3 +1,8 @@
+/**
+ * generate csv data for artillery to use when testing the api
+ * see tests/load.yaml
+ */
+
 const uuid = require('uuid');
 
 const number = process.argv[2];

@@ -24,5 +24,7 @@ scenarios:
             email: "{{ email }}"
             number: "{{ number }}"
       -
+        think: 1
+      -
         get:
           url: "/tokens/{{ id }}"

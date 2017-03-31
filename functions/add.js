@@ -34,8 +34,8 @@ module.exports.handler = (event, context, callback) => {
 
         }
 
-        var expires = Date.now() +  process.ENV.TOKEN_EXPIRY;
-        
+        var expires = Date.now() +  process.env.TOKEN_EXPIRY;
+
         const data = JSON.parse(event.body);
 
         if (token) {

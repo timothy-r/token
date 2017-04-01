@@ -10,8 +10,8 @@ custom:
   tokenExpiry: 2592000
 
   # configure read and write capacity
-  rcu: 1
-  wcu: 1
+  rcu: 9
+  wcu: 9
 
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details

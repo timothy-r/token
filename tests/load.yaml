@@ -1,10 +1,41 @@
 config:
-  target: 'https://bxhowxbojc.execute-api.eu-west-1.amazonaws.com/dev'
+  target: 'https://l8cfuwjg0m.execute-api.eu-west-2.amazonaws.com/dev'
   phases:
     -
-      duration: 40
+      duration: 60
       arrivalRate: 1
-      name: "stage one"
+      name: "1 concurrent"
+    -
+      pause: 300
+    -
+      duration: 60
+      arrivalRate: 2
+      name: "2 concurrent"
+    -
+      pause: 300
+    -
+      duration: 60
+      arrivalRate: 5
+      name: "5 concurrent"
+    -
+      pause: 300
+    -
+      duration: 60
+      arrivalRate: 10
+      name: "10 concurrent"
+    -
+      pause: 300
+    -
+      duration: 30
+      arrivalRate: 15
+      name: "15 concurrent"
+    -
+      pause: 300
+    -
+      duration: 20
+      arrivalRate: 20
+      name: "20 concurrent"
+
 
   payload:
     path: "input.csv"

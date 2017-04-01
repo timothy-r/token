@@ -12,7 +12,7 @@ module.exports.handler = (event, context, callback) => {
     db.get(id, function(err, token){
 
         let response = {
-            statusCode: null,
+            statusCode: 404,
             body: null
         };
 
@@ -28,10 +28,6 @@ module.exports.handler = (event, context, callback) => {
             response.headers = {
                 ETag : token.md5Sum
             };
-
-        } else {
-
-            response.statusCode = 404;
         }
 
         return callback(null, response);

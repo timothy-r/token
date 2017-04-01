@@ -16,20 +16,21 @@ module.exports.handler = (event, context, callback) => {
      */
     db.getWithETag(id, etag, function(err, token) {
 
-        let response = {
-            statusCode: null,
-            body: null
-        };
-
         if (err) {
+
             console.error(err);
+
+            let response = {
+                statusCode: null,
+                body: JSON.stringify(err)
+            };
+
             if (err.message == 'NoMatch') {
                 response.statusCode = 412;
             } else {
                 response.statusCode = 500;
             }
 
-            response.body = JSON.stringify(err);
             return callback(null, response);
 
         }
@@ -46,17 +47,15 @@ module.exports.handler = (event, context, callback) => {
         db.put(id, data, expires, function(err, result) {
 
             let response = {
-                statusCode: null,
+                statusCode: 200,
                 body: null
             };
 
             if (err) {
                 console.error(err);
+
                 response.statusCode = 500;
                 response.body = JSON.stringify(err);
-
-            } else {
-                response.statusCode =  200;
             }
 
             return callback(null, response);

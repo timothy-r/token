@@ -3,20 +3,8 @@ config:
   phases:
     -
       duration: 60
-      arrivalRate: 1
-      name: "1 concurrent"
-    -
-      pause: 300
-    -
-      duration: 60
       arrivalRate: 2
       name: "2 concurrent"
-    -
-      pause: 300
-    -
-      duration: 60
-      arrivalRate: 5
-      name: "5 concurrent"
     -
       pause: 300
     -
@@ -27,27 +15,21 @@ config:
       pause: 300
     -
       duration: 60
-      arrivalRate: 15
-      name: "15 concurrent"
-    -
-      pause: 300
-    -
-      duration: 60
       arrivalRate: 20
       name: "20 concurrent"
     -
       pause: 300
     -
       duration: 60
-      arrivalRate: 25
+      arrivalRate: 30
       name: "25 concurrent"
     -
       pause: 300
     -
-      duration: 120
-      arrivalRate: 1
-      rampTo: 25
-      name: "Ramp up from 1 to 25 users/sec"
+      duration: 300
+      arrivalRate: 10
+      rampTo: 70
+      name: "Ramp up from 10 to 70 users/sec"
 
 
   payload:
@@ -67,8 +49,40 @@ scenarios:
           json:
             email: "{{ email }}"
             number: "{{ number }}"
+            count: 1
       -
         think: 1
       -
         get:
           url: "/tokens/{{ id }}"
+        capture:
+          header: "ETag"
+          as: etag
+      -
+        think: 1
+      -
+        patch:
+          url: "/tokens/{{ id }}"
+          headers:
+            If-Match: "{{ etag }}"
+          json:
+            count: 2
+      -
+        think: 1
+      -
+        get:
+          url: "/tokens/{{ id }}"
+        capture:
+          header: "Etag"
+          as: etag
+      -
+        think: 1
+      -
+        put:
+          url: "/tokens/{{ id }}"
+          headers:
+            If-Match: "{{ etag }}"
+          json:
+            email: "{{ email }}"
+            number: 101
+            count: 3

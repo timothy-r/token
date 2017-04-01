@@ -26,15 +26,28 @@ config:
     -
       pause: 300
     -
-      duration: 30
+      duration: 60
       arrivalRate: 15
       name: "15 concurrent"
     -
       pause: 300
     -
-      duration: 20
+      duration: 60
       arrivalRate: 20
       name: "20 concurrent"
+    -
+      pause: 300
+    -
+      duration: 60
+      arrivalRate: 25
+      name: "25 concurrent"
+    -
+      pause: 300
+    -
+      duration: 120
+      arrivalRate: 1
+      rampTo: 25
+      name: "Ramp up from 1 to 25 users/sec"
 
 
   payload:

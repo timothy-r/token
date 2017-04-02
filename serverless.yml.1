@@ -8,8 +8,8 @@ custom:
 
   cacheCluster: ${self:service}_${self:custom.stage}_tokens
 
-  sg1: sg-${self:service}ServiceSecurityGroup1
-  sg2: sg-${self:service}ServiceSecurityGroup1
+  sg1: ${self:service}ServiceSecurityGroup1
+  sg2: ${self:service}ServiceSecurityGroup1
   snA: ${self:service}ServiceSubnetA
   snB: ${self:service}ServiceSubnetB
 
@@ -31,7 +31,19 @@ provider:
   memorySize: 128
   iamRoleStatements:
     - Effect: Allow
+      Action: # Gives permission on the DynamoDB table
+        - dynamodb:DescribeTable
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: "arn:aws:dynamodb:${self:custom.region}:*:table/${self:custom.tableName}"
+
+    - Effect: Allow
       Action:
+        - "elasticache:DescribeCacheClusters"
         - "elasticache:*"
       Resource: "*"
   vpc:
@@ -88,6 +100,19 @@ functions:
 
 resources:
   Resources:
+    tokenTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.tableName}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: ${self:custom.rcu}
+          WriteCapacityUnits: ${self:custom.wcu}
 
     tokenCache:
       Type: AWS::ElastiCache::CacheCluster

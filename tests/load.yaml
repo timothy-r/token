@@ -2,28 +2,31 @@ config:
   target: 'https://omjgq3yym4.execute-api.eu-west-2.amazonaws.com/dev'
   phases:
     -
-      duration: 60
-      arrivalRate: 2
-      name: "2 concurrent"
+      duration: 120
+      arrivalRate: 1
+      rampTo: 10
+      name: "1 - 10"
     -
       pause: 300
     -
-      duration: 60
-      arrivalRate: 10
-      name: "10 concurrent"
+      duration: 120
+      arrivalRate: 1
+      rampTo: 15
+      name: "1 - 15"
     -
       pause: 300
     -
-      duration: 60
-      arrivalRate: 20
-      name: "20 concurrent"
+      duration: 120
+      arrivalRate: 1
+      rampTo: 20
+      name: "1 - 20"
     -
       pause: 300
     -
       duration: 300
       arrivalRate: 1
       rampTo: 30
-      name: "Ramp up from 1 to 30 arrivals/sec"
+      name: "1 - 30"
 
 
   payload:

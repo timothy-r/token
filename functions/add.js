@@ -1,6 +1,6 @@
 'use strict';
 
-const db = require('../lib/db');
+const store = require('../lib/db');
 
 /**
  * store a token
@@ -14,7 +14,7 @@ module.exports.handler = (event, context, callback) => {
      * first try to get this token with the etag
      * if it exists only allow overwrites if etag matches
      */
-    db.getWithETag(id, etag, function(err, token) {
+    store.getWithETag(id, etag, function(err, token) {
 
         if (err) {
 
@@ -44,7 +44,7 @@ module.exports.handler = (event, context, callback) => {
         }
 
         // go ahead and write
-        db.put(id, data, expires, function(err, result) {
+        store.put(id, data, expires, function(err, result) {
 
             let response = {
                 statusCode: 200,

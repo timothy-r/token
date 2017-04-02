@@ -1,6 +1,6 @@
 'use strict';
 
-const db = require('../lib/db');
+const store = require('../lib/db');
 
 /**
  * delete a token
@@ -9,7 +9,7 @@ module.exports.handler = (event, context, callback) => {
 
     const id = event.pathParameters.id;
 
-    db.delete(id, function(err, result) {
+    store.delete(id, function(err, result) {
 
         let response = {
             statusCode: null,

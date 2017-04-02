@@ -1,6 +1,6 @@
 'use strict';
 
-const db = require('../lib/db');
+const store = require('../lib/db');
 
 /**
  * edit an existing token
@@ -15,7 +15,7 @@ module.exports.handler = (event, context, callback) => {
      * first try to get this token with the supplied etag
      * only allow overwrites if etag matches
      */
-    db.getWithETag(id, etag, function(err, token) {
+    store.getWithETag(id, etag, function(err, token) {
 
         let response = {
             statusCode: null,
@@ -41,7 +41,7 @@ module.exports.handler = (event, context, callback) => {
             var newToken = Object.assign(token.data, JSON.parse(event.body));
 
             // write edited token
-            db.put(id, newToken, expires, function (err, result) {
+            store.put(id, newToken, expires, function (err, result) {
 
                 let response = {
                     statusCode: null,

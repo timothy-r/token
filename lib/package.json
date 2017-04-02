@@ -1,0 +1,11 @@
+{
+  "name": "Token-lib",
+  "version": "1.0.0",
+  "description": "lib files for token API",
+  "author": "Tim Rodger",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "redis": "^2.7.1"
+  }
+}

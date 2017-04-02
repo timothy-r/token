@@ -6,6 +6,12 @@ custom:
   region: ${opt:region, self:provider.region}
   tableName: ${self:service}_${self:custom.stage}_tokens
 
+  sg1: ${self:service}ServiceSecurityGroup1
+  sg2: ${self:service}ServiceSecurityGroup1
+  snA: ${self:service}ServiceSubnetA
+  snB: ${self:service}ServiceSubnetB
+
+
   # tokens expire after 30 days
   tokenExpiry: 2592000
 
@@ -32,6 +38,18 @@ provider:
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
       Resource: "arn:aws:dynamodb:${self:custom.region}:*:table/${self:custom.tableName}"
+    - Effect: Allow
+      Action:
+        - "elasticCache:*"
+      Resource: "*"
+  vpc:
+    securityGroupIds:
+      - ${self:custom.sg1}
+      - ${self:custom.sg2}
+    subnetIds:
+      - ${self:custom.snA}
+      - ${self:custom.snB}
+
   environment:
     TABLE_NAME: ${self:custom.tableName}
     TOKEN_EXPIRY: ${self:custom.tokenExpiry}
@@ -91,3 +109,6 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: ${self:custom.rcu}
           WriteCapacityUnits: ${self:custom.wcu}
+    tokenCache:
+      Type: AWS::ElasticCache
+      Properties:

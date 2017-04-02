@@ -1,10 +1,33 @@
 config:
-  target: 'https://bxhowxbojc.execute-api.eu-west-1.amazonaws.com/dev'
+  target: 'https://omjgq3yym4.execute-api.eu-west-2.amazonaws.com/dev'
   phases:
     -
-      duration: 40
+      duration: 120
       arrivalRate: 1
-      name: "stage one"
+      rampTo: 10
+      name: "1 - 10"
+    -
+      pause: 300
+    -
+      duration: 120
+      arrivalRate: 1
+      rampTo: 15
+      name: "1 - 15"
+    -
+      pause: 300
+    -
+      duration: 120
+      arrivalRate: 1
+      rampTo: 20
+      name: "1 - 20"
+    -
+      pause: 300
+    -
+      duration: 300
+      arrivalRate: 1
+      rampTo: 30
+      name: "1 - 30"
+
 
   payload:
     path: "input.csv"
@@ -23,8 +46,40 @@ scenarios:
           json:
             email: "{{ email }}"
             number: "{{ number }}"
+            count: 1
       -
-        think: 1
+        think: 2
       -
         get:
           url: "/tokens/{{ id }}"
+          capture:
+            header: "etag"
+            as: "hash"
+      -
+        think: 2
+      -
+        patch:
+          url: "/tokens/{{ id }}"
+          headers:
+            If-Match: "{{ hash }}"
+          json:
+            count: 2
+      -
+        think: 2
+      -
+        get:
+          url: "/tokens/{{ id }}"
+          capture:
+            header: "etag"
+            as: "hash"
+      -
+        think: 2
+      -
+        put:
+          url: "/tokens/{{ id }}"
+          headers:
+            If-Match: "{{ hash }}"
+          json:
+            email: "{{ email }}"
+            number: 101
+            count: 3
